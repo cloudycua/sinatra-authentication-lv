@@ -1,0 +1,45 @@
+APPLICATION ARCHITECTURE
+
+> bundle init (gives a nice gemfile, know need Sinatra gem)
+
+create "config.ru"
+- require_relative './config/environment'
+(most important file of any web based ruby application
+ because want to be able to start up application with "rackup config.ru"
+ where config.ru is going to define the stack of my web application
+ that's going to start a server,
+ that's going to be able to respond to requests against
+ the application that's going to be built in this file.)
+
+environment.rb
+- require 'bundler'
+- Bundler.require
+
+Gemfile
+- gem 'activerecord', '4.2', :require => "active_record"
+
+> bundle (to load gems)
+
+Create 'db' directory, 'app' directory
+
+Rakefile
+- require_relative './config/environment'
+- require 'sinatra/activerecord/rake'
+- task :console do
+    Pry.start
+  end
+
+Create 'app/controllers/application_controller.rb'
+- class ApplicationController < Sinatra::Base
+    configure do
+      set :public_folder, 'public'
+      set :views, 'app/views'
+      enable :sessions       # turns sessions on
+      set :session_secret, "carcollection"
+    end
+  end
+
+Test app can start up with following code in application_controller.rb
+- get '/' do
+    "Hello World!"
+  end
